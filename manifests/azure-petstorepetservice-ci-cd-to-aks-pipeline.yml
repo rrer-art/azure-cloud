@@ -14,11 +14,11 @@ resources:
 - repo: self
 
 variables:
-
+  group: 'global'
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '2f7c9697-f237-4d5b-994d-4228eed03f32'
+  dockerRegistryServiceConnection: '3b5a7bfb-5c40-465b-aa0e-726378946298'
   imageRepository: 'petstorepetservice'
-  containerRegistry: 'azurepetstorecr.azurecr.io'
+  containerRegistry: 'kgdev.azurecr.io'
   dockerfilePath: 'petstore/petstorepetservice/Dockerfile'
   tag: '$(Build.BuildId)'
   imagePullSecret: '$(crImagePullSecretGlobal)'
@@ -32,9 +32,9 @@ stages:
     pool:
       vmImage: 'windows-latest'
     steps:
-    - task: CredScan@2
-      inputs:
-        toolMajorVersion: 'V2'
+    # - task: CredScan@2
+    #   inputs:
+    #     toolMajorVersion: 'V2'
  
   - job: Build
     displayName: Build App
@@ -50,7 +50,7 @@ stages:
         mavenPomFile: 'petstore/petstorepetservice/pom.xml'
         mavenOptions: '-Xmx3072m'
         javaHomeOption: 'JDKVersion'
-        jdkVersionOption: '8'
+        jdkVersionOption: '1.8'
         jdkArchitectureOption: 'x64'
         publishJUnitResults: true
         testResultsFiles: 'petstore/petstorepetservice/target/surefire-reports/TEST-*.xml'
@@ -88,7 +88,7 @@ stages:
             displayName: Create secret
             inputs: 
               action: createSecret
-              kubernetesServiceConnection: azurepetstoreservices-akscluster-ingress-petstoreservices
+              kubernetesServiceConnection: aksconnect
               namespace: default
               secretType: dockerRegistry
               secretName: $(imagePullSecret)
@@ -97,7 +97,7 @@ stages:
             displayName: Deploy to Kubernetes cluster
             inputs:
               action: deploy
-              kubernetesServiceConnection: azurepetstoreservices-akscluster-ingress-petstoreservices
+              kubernetesServiceConnection: aksconnect
               manifests: |
                 $(Pipeline.Workspace)/manifests/petstorepetservice-deployment-everything-enabled.yml
                 $(Pipeline.Workspace)/manifests/petstorepetservice-service-everything-enabled.yml
@@ -106,18 +106,18 @@ stages:
               containers: |
                 $(containerRegistry)/$(imageRepository):$(tag)
                 
-- stage: Automation
-  displayName: Automation stage
-  jobs: 
-  - job: Automation
-    displayName: Automation Testing
-    pool:
-      vmImage: 'windows-latest'
-    steps:
-        - task: TriggerPipeline@1
-          inputs:
-            serviceConnection: 'Automation'
-            project: '6b3206dd-90b3-40f6-a611-e5a1e5a13593'
-            Pipeline: 'Build'
-            buildDefinition: 'azure-petstoreautomation-regression-tests'
-            Branch: 'main'
+# - stage: Automation
+#   displayName: Automation stage
+#   jobs: 
+#   - job: Automation
+#     displayName: Automation Testing
+#     pool:
+#       vmImage: 'windows-latest'
+#     steps:
+#         - task: TriggerPipeline@1
+#           inputs:
+#             serviceConnection: 'Automation'
+#             project: '6b3206dd-90b3-40f6-a611-e5a1e5a13593'
+#             Pipeline: 'Build'
+#             buildDefinition: 'azure-petstoreautomation-regression-tests'
+#             Branch: 'main'
