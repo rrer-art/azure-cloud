@@ -7,14 +7,9 @@ bing:
       key: ${BING_SEARCH_SUBSCRIPTION_KEY:}
 petstore:
   service:
-    pet:
-     url: ${PETSTOREPETSERVICE_URL:http://localhost:8081}
-    product:
-      url: ${PETSTOREPRODUCTSERVICE_URL:http://localhost:8082}
-    order:
-      url: ${PETSTOREORDERSERVICE_URL:http://localhost:8083}
+    url: ${PETSTORESERVICE_URL}
     subscription:
-     key: ${PETSTORESERVICE_SUBSCRIPTION_KEY:}
+      key: ${PETSTORESERVICE_SUBSCRIPTION_KEY}
   apim:
    host: ${PETSTORE_APIM_HOST:}
   logging:
