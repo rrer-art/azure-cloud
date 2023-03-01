@@ -17,6 +17,25 @@
 	</div>
 	<div lang="en" th:replace="fragments/footer :: footer"></div>
 	<div lang="en" th:replace="fragments/disclaimer :: disclaimer"></div>
+	<nav class="my-2 my-md-0 mr-md-3">
+		Welcome <span th:text="${userName}">
+	</nav>
+	<div th:if="${user} != null">
+		<a class="p-2 text-dark"
+			href="/oauth2/authorization/B2C_1_profileediting">Edit Profile</a>
+		<a class="p-2 text-dark"
+			href="/oauth2/authorization/B2C_1_passwordreset">Reset Password</a>
+		<a class="p-2 text-dark" href="/claims">View AD Claims</a>
+		<form style="display: inline" method="post" action="/logout">
+			<button class="btn btn-outline-primary" type="submit">Log
+				out</button>
+		</form>
+	</div>
+	<div th:if="${user} == null">
+		<div th:if="${containerEnvironment.securityEnabled}">
+			<a class="btn btn-outline-primary" href="/oauth2/authorization/B2C_1_signupsignin">Sign up / Sign in</a>
+		</div>
+	</div>
 </body>
 
 </html>
