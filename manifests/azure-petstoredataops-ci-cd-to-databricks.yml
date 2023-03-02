@@ -6,6 +6,8 @@ trigger:
     include:
     - petstore/petstoredataops/*
 
+variables:
+- group: global
 resources:
 - repo: self
 
@@ -30,11 +32,11 @@ stages:
       steps:
       - task: configuredatabricks@0
         inputs:
-          url: 'https://adb-5501209530448281.1.azuredatabricks.net'
-          token: $(token)
+          url: 'https://adb-658793531219809.9.azuredatabricks.net'
+          token: $(databricks)
       - task: startcluster@0
         inputs:
-          clusterid: '0720-145135-coup132'          
+          clusterid: '0301-200015-xpgx69tu'          
       - task: deploynotebooks@0
         inputs:
           notebooksFolderPath: '$(System.DefaultWorkingDirectory)/petstore/petstoredataops/notebooks'
