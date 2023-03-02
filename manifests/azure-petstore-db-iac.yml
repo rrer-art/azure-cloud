@@ -31,7 +31,7 @@ trigger: none
 
 variables:
   vmImageName: 'ubuntu-latest'
-  azureServiceConnection: 'Azure'
+  azureServiceConnection: 'serconfordb'
   templateFile: 'petstore/iac/bicep/db/main.bicep'
 
 pool:
