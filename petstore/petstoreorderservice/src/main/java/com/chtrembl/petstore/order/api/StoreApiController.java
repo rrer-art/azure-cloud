@@ -173,7 +173,7 @@ public class StoreApiController implements StoreApi {
 				String orderJSON = new ObjectMapper().writeValueAsString(order);
 
 				if (order.isComplete() && jmsTemplate != null && order.getEmail() != null
-						&& order.getEmail().trim().toLowerCase().endsWith("microsoft.com")) {
+						) {
 					jmsTemplate.convertAndSend("orders", orderJSON);
 				}
 
