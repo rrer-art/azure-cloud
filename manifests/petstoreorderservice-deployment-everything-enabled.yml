@@ -15,29 +15,29 @@ spec:
       nodeSelector:
         "beta.kubernetes.io/os": linux
       containers:
-      - name: petstoreorderservice
-        image: kgdev.azurecr.io/petstoreorderservice:latest
-        resources:
-          requests:
-            cpu: 250m
-            memory: 1Gi
-          limits:
-            cpu: 500m
-            memory: 2Gi
-        ports:
-        - containerPort: 8080
-        env:
-          - name: PETSTOREORDERSERVICE_SERVER_PORT
-            value: "80"
-#           - name: spring.config.name
-#             value: application_with_everything_enabled
-#           - name: PETSTORESERVICES_AI_INSTRUMENTATION_KEY
-#             valueFrom:
-#               secretKeyRef:
-#                 name: aisecretkey
-#                 key: secret
-          - name: PETSTOREPRODUCTSERVICE_URL
-            value: "http://aks-petstoreproductservice/"
+        - name: petstoreorderservice
+          image: kgdev.azurecr.io/petstoreorderservice:latest
+          resources:
+            requests:
+              cpu: 250m
+              memory: 1Gi
+            limits:
+              cpu: 500m
+              memory: 2Gi
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PETSTOREORDERSERVICE_SERVER_PORT
+              value: "80"
+            #           - name: spring.config.name
+            #             value: application_with_everything_enabled
+            - name: PETSTORESERVICES_AI_INSTRUMENTATION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: aisecretkey
+                  key: secret
+            - name: PETSTOREPRODUCTSERVICE_URL
+              value: "http://aks-petstoreproductservice/"
 #           - name: PETSTOREORDERSERVICE_EMAIL_TOPIC_CONNECTION_STRING
 #             valueFrom:
 #               secretKeyRef:
